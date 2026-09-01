@@ -1,9 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Spline from '@splinetool/react-spline';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useMediaQuery } from "react-responsive";
 import './App.css';
+import demoshopgif from './assets/flutter-demo-shop.gif';
 import projectThumbnail from './assets/spacedout.png';
-import questsystemthumbnail from './assets/questsystem.png'
+import questsystemthumbnail from './assets/questsystem.png';
+import desktopComanion from './assets/desktop-companion.png';
+import pythonLogo from './assets/python-logo.png';
+import dungeonSwitchTumbnail from './assets/dungeon-switch.jpg';
+
 
 
 // Portfolio single-file React component (TailwindCSS required)
@@ -13,55 +19,58 @@ const SPLINE_SCENE_URL = 'https://prod.spline.design/IpT7wVcltCteByV8/scene.spli
 
 export default function Portfolio() {
     const [mobileOpen, setMobileOpen] = useState(false);
-
-  
+    const isMobile = useMediaQuery({ maxWidth: 767 });
     const [scrolled, setScrolled] = useState(false);
     const splineWrapperRef = useRef(null);
+    const [showMoreProjects, setShowMoreProjects] = useState(false);
 
-useEffect(() => {
-    const handleScroll = () => {
-        console.log("scroll:", window.scrollY);
-        setScrolled(window.scrollY > 100);
-    };
+    useEffect(() => {
+        const handleScroll = () => {
+            console.log("scroll:", window.scrollY);
+            setScrolled(window.scrollY > 100);
+        };
 
-    window.addEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", handleScroll);
 
-    return () => {
-        window.removeEventListener("scroll", handleScroll);
-    };
-}, []);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
 
-// Erlaubt normales Seiten-Scrollen, auch wenn die Maus über der Spline-Grafik ist.
-// Spline fängt Wheel-Events sonst selbst ab (Kamera-Zoom). Indem wir das Event
-// in der Capture-Phase abfangen und die Propagation stoppen, bekommt Spline es
-// gar nicht erst zu sehen - der Browser scrollt die Seite trotzdem ganz normal weiter.
-useEffect(() => {
-    const el = splineWrapperRef.current;
-    if (!el) return;
 
-    const stopSplineFromCapturingScroll = (e) => {
-        e.stopPropagation();
-    };
+    useEffect(() => {
+        const el = splineWrapperRef.current;
+        if (!el) return;
 
-    el.addEventListener('wheel', stopSplineFromCapturingScroll, { capture: true, passive: true });
-    return () => {
-        el.removeEventListener('wheel', stopSplineFromCapturingScroll, { capture: true });
-    };
-}, []);
+        const stopSplineFromCapturingScroll = (e) => {
+            e.stopPropagation();
+        };
+
+        el.addEventListener('wheel', stopSplineFromCapturingScroll, { capture: true, passive: true });
+        return () => {
+            el.removeEventListener('wheel', stopSplineFromCapturingScroll, { capture: true });
+        };
+    }, []);
 
     return (
         <div className="min-h-screen bg-black text-white antialiased">
             {/* Global color variables */}
             <style>
                 {`
-          :root{
-            --accent-pink: #FF2D95; /* bright pink */
-            --anthrazit: #18181B; /* anthrazit/dark gray */
-            --muted-white: rgba(255,255,255,0.9);
-          }
-        `}
-            </style>
-
+                :root{
+                  --accent-pink: #FF2D95; /* bright pink */
+                  --anthrazit: #18181B; /* anthrazit/dark gray */
+                  --muted-white: rgba(255,255,255,0.9);
+                }
+                .hide-scrollbar::-webkit-scrollbar{
+                  display: none;
+                }
+                .hide-scrollbar{
+                  -ms-overflow-style: none;
+                  scrollbar-width: none;
+                }
+                 `}
+        </style>
             <header     className={`fixed w-full z-40 backdrop-blur-md transition-all duration-300 ${
                                     scrolled
                                     ? 'bg-[#18181B]/70 border-b border-pink-500/20 shadow-lg shadow-pink-500/5'
@@ -75,7 +84,12 @@ useEffect(() => {
                         <a href="#about" className="hover:text-pink-400">About</a>
                         <a href="#projects" className="hover:text-pink-400">Projects</a>
                         <a href="#contact" className="hover:text-pink-400">Contact</a>
-                        <a href="/resume.pdf" className="resume-btn">Resume</a>
+                        <motion.div  className=" cursor-pointer rounded-[50px] "
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+                            <a download href="/CV_Helena-Kloeckner.pdf" className="resume-btn">Resume</a>
+                        </motion.div>
+                       
                     </div>
 
                     <button
@@ -104,7 +118,7 @@ useEffect(() => {
 
             <main id="home" className="pt-10">
                 {/* Hero */}
-                <section className="relative overflow-hidden min-h-[760px]">
+                <section className="relative overflow-hidden min-h-[760px] ml-10">
 
                 {/* Spline 3D canvas */}
                                    <div
@@ -143,10 +157,10 @@ useEffect(() => {
                             <motion.p
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                transition={{ delay: 0.2 }}
+                                transition={{ delay: 0.5 }}
                                 className="mt-6 max-w-xl text-gray-300"
                             >
-                                I build immersive games and cross-platform mobile apps. I hold a Bachelor's in Games Programming and specialise in Unreal Engine, Unity, and Flutter for Android & iOS.
+                                I build games, cross-platform mobile apps as well as desktop applications. I hold a Bachelor's in Games Programming and currently working professionally with Flutter for Android, iOS and desktop platforms.
                             </motion.p>
 
                             <div className="mt-8 flex gap-4 pointer-events-auto">
@@ -158,7 +172,7 @@ useEffect(() => {
                                 </a>
                             </div>
 
-                            <div className="mt-8 text-sm text-gray-400">Available for freelance & full-time roles</div>
+                            <div className="mt-8 text-sm text-gray-400">Available for full-time roles</div>
                         </div>
 
                      
@@ -169,72 +183,124 @@ useEffect(() => {
                 <section id="about" className="max-w-6xl mx-auto px-6 py-45">
                     {/* About Me Heading + Intro */}
                     <div className="text-center max-w-3xl mx-auto">
-                        <h2 className="text-3xl font-bold">About me</h2>
-                        <p className="mt-4 text-gray-300">
+                        <h2  
+                    
+                        className="text-3xl font-bold">About me 
+                        </h2>
+                    <motion.p 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 0.8 }}
+                    className="mt-4 text-gray-300 font-MS">
                             I graduated in October 2024 with a Bachelor's degree in Games Programming where I focused on real-time graphics,
-                            gameplay systems, and engine-specific tooling for both Unreal Engine and Unity 3D. I now work professionally
-                            building cross-platform mobile apps using Flutter — shipping performant apps to Android and iOS.
-                        </p>
+                            gameplay systems, and engine-specific tooling for both Unreal Engine and Unity. I now work professionally
+                            building cross-platform mobile apps using Flutter — shipping performant apps to Android and iOS. 
+
+                    </motion.p>
+                      
                     </div>
 
                     {/* Skills + Quick Facts grid */}
                     <div className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                         {/* Left: Skills grid */}
-                        <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div
+                        <div 
+                           
+                            className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6"
+                        >
+                            <motion.div
+                             initial={{ opacity: 0, scale: 0.5 }}
+                             whileInView={{ opacity: 1, scale: 1 }}
+                             viewport={{ once: true, amount: 0.4 }}
+                             transition={{
+                               duration: 0.8,
+                              
+                               ease: [0, 0.71, 0.2, 1.01],
+                             }}
                                 className="bg-[#0f0f10] p-5 rounded-2xl border"
                                 style={{ borderColor: 'rgba(255,45,149,0.08)' }}
                             >
-                                <h4 className="font-semibold">Unreal Engine</h4>
+                                <h4 className="font-semibold text-pink-400">Game Engines</h4>
                                 <p className="text-sm text-gray-400 mt-1">
-                                    Materials, Blueprints, C++ gameplay systems, optimization.
+                                    Unreal Engine: Materials, Blueprints, C++ gameplay systems. Unity: C#, DOTS, custom editors, physics and gameplay code.
                                 </p>
-                            </div>
+                            </motion.div>
 
-                            <div
+                            <motion.div
+                             initial={{ opacity: 0, scale: 0.5 }}
+                             whileInView={{ opacity: 1, scale: 1 }}
+                             viewport={{ once: true, amount: 0.4 }}
+                             transition={{
+                               duration: 0.8,
+                              delay: 0.2,
+                               ease: [0, 0.71, 0.2, 1.01],
+                             }}
                                 className="bg-[#0f0f10] p-5 rounded-2xl border"
                                 style={{ borderColor: 'rgba(255,45,149,0.08)' }}
                             >
-                                <h4 className="font-semibold">Unity</h4>
+                                <h4 className="font-semibold text-pink-400">Programming Languages and Frameworks</h4>
                                 <p className="text-sm text-gray-400 mt-1">
-                                    C#, DOTS, custom editors, physics and gameplay code.
+                                    Dart & Flutter, C#, basic knowledge in C++. Currently improving JavaScript, TypeScript, React, Electron and Web Development skills.
                                 </p>
-                            </div>
+                            </motion.div>
 
-                            <div
+                            <motion.div
+                             initial={{ opacity: 0, scale: 0.5 }}
+                             whileInView={{ opacity: 1, scale: 1 }}
+                             viewport={{ once: true, amount: 0.4 }}
+                             transition={{
+                               duration: 0.8,
+                              delay: 0.4,
+                               ease: [0, 0.71, 0.2, 1.01],
+                             }}
                                 className="bg-[#0f0f10] p-5 rounded-2xl border"
                                 style={{ borderColor: 'rgba(255,45,149,0.08)' }}
                             >
-                                <h4 className="font-semibold">Flutter</h4>
+                                <h4 className="font-semibold text-pink-400">Flutter (iOS, Android & Desktop)</h4>
                                 <p className="text-sm text-gray-400 mt-1">
-                                    Responsive UI, platform integrations, Riverpod & state management, native plugins.
+                                    Responsive UI, platform integrations, Riverpod state management, native plugins, developing new features, native Kotlin and Swift development, Rest API implementation, asynchronous programming.
                                 </p>
-                            </div>
+                            </motion.div>
 
-                            <div
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.5 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true, amount: 0.4 }}
+                                transition={{
+                                    duration: 0.8,
+                                    delay: 0.6,
+                                    ease: [0, 0.71, 0.2, 1.01],
+                                }}
                                 className="bg-[#0f0f10] p-5 rounded-2xl border"
                                 style={{ borderColor: 'rgba(255,45,149,0.08)' }}
                             >
-                                <h4 className="font-semibold">Tools</h4>
+                                <h4 className="font-semibold text-pink-400">Tools</h4>
                                 <p className="text-sm text-gray-400 mt-1">
-                                    GitLab, CI/CD, Firebase, Integration tests, REST, Figma.
+                                    GitLab, Firebase Crashlytics, REST API, App Deployment and Release Management (Google Play Store, Apple App Store), JSON.
                                 </p>
-                            </div>
+                            </motion.div>
                         </div>
 
                         {/* Right: Quick Facts */}
-                        <aside
-                            className="bg-[#0b0b0c] p-6 rounded-3xl border mt-4"
+                        <motion.aside
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, amount: 0.4 }}
+                            transition={{
+                                duration: 0.8,
+                                delay: 0.2,
+                                ease: [0, 0.71, 0.2, 1.01],
+                            }}
+                            className="bg-[#0b0b0c] p-6 rounded-3xl border mt-20"
                             style={{ borderColor: 'rgba(255,45,149,0.06)' }}
                         >
-                            <h3 className="font-semibold text-xl">Quick facts</h3>
+                            <h3 className="font-semibold text-xl text-pink-400">Quick facts</h3>
                             <ul className="mt-4 space-y-3 text-gray-300 text-sm">
                                 <li>🎓 Bachelor's Degree — Games Programming</li>
-                                <li>📱 Flutter — Android + iOS</li>
-                                <li>🎮 Unreal & Unity specialist</li>
+                                <li>📱 Flutter — Android, iOS & Desktop</li>
                                 <li>🌍 Available: Remote / Relocate</li>
                             </ul>
-                        </aside>
+                        </motion.aside>
                     </div>
                 </section>
 
@@ -243,11 +309,11 @@ useEffect(() => {
                 <section id="projects" className="bg-[#080808] py-40">
                     <div className="max-w-6xl mx-auto px-6">
                         <h2 className="text-3xl font-bold">Selected Projects</h2>
-                        <p className="text-gray-400 mt-2">A curated selection of recent work — games, apps and prototypes.</p>
+                        <p className="text-gray-400 mt-2">A selection of recent work — games, apps and prototypes.</p>
 
-                        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {/* Project card - duplicate for each project */}
-                            <article className="bg-[#0f0f10] rounded-2xl p-4 border" style={{ borderColor: 'rgba(255,45,149,0.04)' }}>
+                        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+                            {/* Project card 1 */}
+                            <article className="w-full max-w-sm bg-[#0f0f10] rounded-2xl p-4 border" style={{ borderColor: 'rgba(255,45,149,0.04)' }}>
                                 <img src={projectThumbnail} alt="Project Thumbnail" className="h-40 w-full object-cover rounded-lg" />
 
                                 <h3 className="mt-4 font-semibold">Local Multiplayer Game</h3>
@@ -258,31 +324,103 @@ useEffect(() => {
                                 </div>
                             </article>
 
-
-                            <article className="bg-[#0f0f10] rounded-2xl p-4 border" style={{ borderColor: 'rgba(255,45,149,0.04)' }}>
-                                <div className="h-40 rounded-lg bg-gradient-to-br from-black to-[#111111] flex items-center justify-center text-gray-400">App Screenshot</div>
-                                <h3 className="mt-4 font-semibold">Mobile App</h3>
-                                <p className="text-sm text-gray-400 mt-2">Flutter app built for Android & iOS — features, architecture, and distribution.</p>
+                            {/* Project card 2 */}
+                            <article className="w-full max-w-sm bg-[#0f0f10] rounded-2xl p-4 border" style={{ borderColor: 'rgba(255,45,149,0.04)' }}>
+                                <img src={demoshopgif} alt="Project Thumbnail" className="h-40 w-full object-cover rounded-lg" />
+                                <h3 className="mt-4 font-semibold">Flutter Demo Shop</h3>
+                                <p className="text-sm text-gray-400 mt-2">A Flutter app integrating a fake e-commerce backend.</p>
                                 <div className="mt-4 flex items-center justify-between">
                                     <div className="text-xs text-gray-400">Flutter</div>
-                                    <a href="#" className="text-sm font-medium" style={{ color: 'var(--accent-pink)' }}>Details →</a>
+                                    <a href="https://github.com/adtreclove/flutter-demo-shop" className="text-sm font-medium" style={{ color: 'var(--accent-pink)' }}>Code →</a>
                                 </div>
                             </article>
 
-                            <article className="bg-[#0f0f10] rounded-2xl p-4 border" style={{ borderColor: 'rgba(255,45,149,0.04)' }}>
-                                <img src={questsystemthumbnail} alt="Project Thumbnail" className="h-40 w-full object-cover rounded-lg" />
-                                <h3 className="mt-4 font-semibold">Prototype / Tooling</h3>
-                                <p className="text-sm text-gray-400 mt-2">A working modular Quest Sytstem prototype</p>
+                            {/* Project card 3 */}
+
+                            <article className="w-full max-w-sm bg-[#0f0f10] rounded-2xl p-4 border" style={{ borderColor: 'rgba(255,45,149,0.04)' }}>
+                                <img src={desktopComanion} alt="Project Thumbnail" className="h-40 w-full object-cover rounded-lg" />
+                                <h3 className="mt-4 font-semibold">JavaScript Desktop Companion</h3>
+                                <p className="text-sm text-gray-400 mt-2">Building a desktop companion that boosts productivity and helps remember tasks.</p>
                                 <div className="mt-4 flex items-center justify-between">
-                                    <div className="text-xs text-gray-400">Unreal Engine / C++</div>
-                                    <a href="#" className="text-sm font-medium" style={{ color: 'var(--accent-pink)' }}>Read more →</a>
+                                    <div className="text-xs text-gray-400">JavaScript / Electron</div>
+                                    <a href="https://github.com/adtreclove/desktop-companion/tree/main" className="text-sm font-medium" style={{ color: 'var(--accent-pink)' }}>Code →</a>
                                 </div>
                             </article>
+
+                    
+
+                            {/* Extra projects - shown when "Show more" is pressed */}
+                            <AnimatePresence>
+                                {showMoreProjects && (
+                                    <>
+                                        <motion.article
+                                            key="extra-1"
+                                            initial={{ opacity: 0, y: 24 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 24 }}
+                                            transition={{ duration: 0.4 }}
+                                            className="w-full max-w-sm bg-[#0f0f10] rounded-2xl p-4 border"
+                                            style={{ borderColor: 'rgba(255,45,149,0.04)' }}
+                                        >
+                                        <img src={questsystemthumbnail} alt="Project Thumbnail" className="h-40 w-full object-cover rounded-lg" />
+                                        <h3 className="mt-4 font-semibold">Unreal Engine Quest System</h3>
+                                        <p className="text-sm text-gray-400 mt-2">A working modular Quest Sytstem prototype</p>
+                                        <div className="mt-4 flex items-center justify-between">
+                                            <div className="text-xs text-gray-400">Unreal Engine / C++</div>
+                                            <a href="https://github.com/adtreclove/unreal-quest-system" className="text-sm font-medium" style={{ color: 'var(--accent-pink)' }}>Code →</a>
+                                        </div>
+                                        </motion.article>
+
+                                        <motion.article
+                                            key="extra-2"
+                                            initial={{ opacity: 0, y: 24 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 24 }}
+                                            transition={{ duration: 0.4, delay: 0.1 }}
+                                            className="w-full max-w-sm bg-[#0f0f10] rounded-2xl p-4 border"
+                                            style={{ borderColor: 'rgba(255,45,149,0.04)' }}
+                                        >
+                                               <img src={pythonLogo} alt="Python Logo" className="h-40 w-full object-cover rounded-lg" />
+                                            <h3 className="mt-4 font-semibold">Python Motion Detector</h3>
+                                            <p className="text-sm text-gray-400 mt-2">Real-time motion detection using Python, OpenCV and Kivy.</p>
+                                            <div className="mt-4 flex items-center justify-between">
+                                                <div className="text-xs text-gray-400">Python / OpenCV / Kivy</div>
+                                                <a href="https://github.com/adtreclove/PythonMotionDetection" className="text-sm font-medium" style={{ color: 'var(--accent-pink)' }}>Code →</a>
+                                            </div>
+                                        </motion.article>
+
+                                        <motion.article
+                                            key="extra-3"
+                                            initial={{ opacity: 0, y: 24 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 24 }}
+                                            transition={{ duration: 0.4, delay: 0.2 }}
+                                            className="w-full max-w-sm bg-[#0f0f10] rounded-2xl p-4 border"
+                                            style={{ borderColor: 'rgba(255,45,149,0.04)' }} 
+                                        >
+                                              <img src={dungeonSwitchTumbnail} alt="Dungeon Switch Thumbnail" className="h-40 w-full object-cover rounded-lg" />
+                                            <h3 className="mt-4 font-semibold">Unreal Engine RPG</h3>
+                                            <p className="text-sm text-gray-400 mt-2">An arcade and dungeon crawler mixed mini game with a random gameplay modification systen.</p>
+                                            <div className="mt-4 flex items-center justify-between">
+                                                <div className="text-xs text-gray-400">Unreal Engine / Blueprints</div>
+                                                <a href="https://www.youtube.com/watch?v=7HvJW-lENZo" className="text-sm font-medium" style={{ color: 'var(--accent-pink)' }}>View Gameplay→</a>
+                                            </div>
+                                        </motion.article> 
+                                    </>
+                                )}
+                            </AnimatePresence>
                         </div>
 
-                        <div className="mt-8 text-center">
-                            <a href="#work" className="resume-btn inline-block px-6 py-3 rounded-full border" style={{ borderColor: 'var(--accent-pink)' }}>See more work</a>
-                        </div>
+                        {/* Show more button*/}
+                        <motion.div  className=" cursor-pointer rounded-[50px] mt-8 text-center "
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                onClick={() => setShowMoreProjects(v => !v)}
+                                style={{ borderColor: 'var(--accent-pink)' }}
+                            >
+                            <a className="resume-btn">{showMoreProjects ? 'Show less' : 'See more work'} </a>
+                        </motion.div>
+
                     </div>
                 </section>
 
@@ -292,67 +430,84 @@ useEffect(() => {
                     <p className="text-gray-400 mt-2">Interested in working together? Send a message — or email me directly.</p>
 
                     <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="bg-[#0b0b0c] p-6 rounded-2xl border" style={{ borderColor: 'rgba(255,45,149,0.04)' }}>
+                        <motion.div 
+                            initial={isMobile ? false : { x: -300 }}
+                            whileInView={isMobile ? undefined : { x: 0 }}
+                            viewport={{ once: true, amount: 0.4 }}
+                            transition={{ duration: 0.8 }}
+                            className="bg-[#0b0b0c] p-6 rounded-2xl border"
+                            style={{ borderColor: 'rgba(255,45,149,0.04)' }}>
                             <h4 className="font-semibold">Get in touch</h4>
-                            <p className="text-gray-400 text-sm mt-2">E-mail: <a href="mailto:youremail@example.com" style={{ color: 'var(--accent-pink)' }}>helenakloeckner1@gmail.com</a></p>
-                            <p className="text-gray-400 text-sm mt-1">Location: Remote</p>
+                            <p className="text-gray-400 text-sm mt-2">📧     <a href="mailto:youremail@example.com" style={{ color: 'var(--accent-pink)' }}>helenakloeckner1@gmail.com</a></p>
+                            <p className="text-gray-400 text-sm mt-1">📍     Remote / Relocate</p>
 
 
-                            <div className="mt-6 flex flex-wrap justify-center sm:justify-start gap-3">
-                                <a
-                                    href="#"
+                            <div className="mt-20 flex flex-wrap justify-center sm:justify-start gap-3">
+                                <motion.a
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1}}
+                                viewport={{ once: true, amount: 0.4 }}
+                                transition={{ duration: 0.4 }}
+
+                                    href="https://github.com/adtreclove"
                                     aria-label="GitHub"
                                     className="socials-btn flex-1 sm:flex-none text-center"
                                 >
                                     GitHub
-                                </a>
-                                <a
-                                    href="https://www.linkedin.com/in/helena-klöckner"
-                                    aria-label="LinkedIn"
-                                    className="socials-btn flex-1 sm:flex-none text-center"
-                                >
+                                </motion.a>
+                                <motion.a
+                                    initial={{ opacity: 0 }}
+                                    whileInView={{ opacity: 1}}
+                                    viewport={{ once: true, amount: 0.4 }}
+                                    transition={{ duration: 0.4, delay: 0.2 }}
+                                        href="https://www.linkedin.com/in/helena-klöckner"
+                                        aria-label="LinkedIn"
+                                        className="socials-btn flex-1 sm:flex-none text-center"
+                                    >
                                     LinkedIn
-                                </a>
-                                <a
-                                    href="#"
-                                    aria-label="Instagram"
-                                    className="socials-btn flex-1 sm:flex-none text-center"
-                                >
-                                    Instagram
-                                </a>
-                                <a
-                                    href="#"
+                                </motion.a>
+                             
+                                <motion.a
+                                  initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1}}
+                                viewport={{ once: true, amount: 0.4 }}
+                                transition={{ duration: 0.4, delay: 0.4 }}
+                                    href="https://adtreclove.itch.io/"
                                     aria-label="Itch.io"
                                     className="socials-btn flex-1 sm:flex-none text-center"
                                 >
                                     Itch.io
-                                </a>
+                                </motion.a>
                             </div>
 
 
-                        </div>
+                        </motion.div>
 
-                        <form className="bg-[#0b0b0c] p-6 rounded-2xl border" style={{ borderColor: 'rgba(255,45,149,0.04)' }} onSubmit={(e) => { e.preventDefault(); window.location = 'mailto:youremail@example.com'; }}>
+                        <motion.form 
+                           initial={isMobile ? false : { x: 300 }}
+                            whileInView={isMobile ? undefined : { x: 0 }}
+                            viewport={{ once: true, amount: 0.4 }}
+                            transition={{ duration: 0.8 }}
+                            className="bg-[#0b0b0c] p-6 rounded-2xl border" style={{ borderColor: 'rgba(255,45,149,0.04)' }} onSubmit={(e) => { e.preventDefault(); window.location = 'mailto:youremail@example.com'; }}>
                             <label className="block text-sm text-gray-300">Your name</label>
-                            <input className="w-full mt-2 p-3 rounded-lg bg-black border border-gray-800" placeholder="Jane Doe" />
+                            <input className="w-full mt-2 p-3 rounded-lg bg-black border border-gray-800" placeholder="" />
 
                             <label className="block text-sm text-gray-300 mt-4">Email</label>
-                            <input className="w-full mt-2 p-3 rounded-lg bg-black border border-gray-800" placeholder="jane@company.com" />
+                            <input className="w-full mt-2 p-3 rounded-lg bg-black border border-gray-800" placeholder="" />
 
                             <label className="block text-sm text-gray-300 mt-4">Message</label>
                             <textarea className="w-full mt-2 p-3 rounded-lg bg-black border border-gray-800" rows={5} placeholder="Let's build something together"></textarea>
 
                             <button type="submit" className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'linear-gradient(90deg,#ff2d95 0%, #ff6fb5 100%)' }}>Send</button>
-                        </form>
+                        </motion.form>
                     </div>
                 </section>
 
                 <footer className="border-t border-gray-900/40 py-8 mt-12">
                     <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
-                        <div>© {new Date().getFullYear()} Helena Klöckner - Built with ❤️ using React, Tailwind & Spline</div>
+                        <div>© {new Date().getFullYear()} Helena Klöckner - Built with ❤️ using React, Tailwind & Spline. <a href="https://www.flaticon.com/de/kostenlose-icons/code" title="code Icons">Code Icons made by Magnific - Flaticon</a></div>
                         <div className="flex gap-4">
-                            <a href="#privacy" className="hover:text-pink-400">Privacy</a>
-                            <a href="#resume" className="hover:text-pink-400">Resume</a>
+                            <a download href="/CV_Helena-Kloeckner.pdf" className="hover:text-pink-400">Resume</a>
                         </div>
                     </div>
                 </footer>
