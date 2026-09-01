@@ -24,16 +24,6 @@ Personal portfolio website showcasing my projects, skills, and experience as a d
 
 The website is available via this URL: https://adtreclove.github.io/personal-portfolio/.
 
-## 📦 Build
-
-To create a production build:
-
-```bash
-npm run build
-```
-
-The generated files can be found in the `dist` folder.
-
 ## 👩‍💻 About
 
 This portfolio was created to showcase my work as a developer, including projects in web development, game development, and other technologies.
