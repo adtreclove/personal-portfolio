@@ -87,7 +87,7 @@ export default function Portfolio() {
                         <motion.div  className=" cursor-pointer rounded-[50px] "
                             whileHover={{ scale: 1.1 }}
                             transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-                            <a download href="/CV_Helena-Kloeckner.pdf" className="resume-btn">Resume</a>
+                            <a  download="Helena_Kloeckner_CV.pdf" href={`${import.meta.env.BASE_URL}CV_Helena-Kloeckner.pdf`} className="resume-btn">Resume</a>
                         </motion.div>
                        
                     </div>
@@ -507,7 +507,7 @@ export default function Portfolio() {
                     <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
                         <div>© {new Date().getFullYear()} Helena Klöckner - Built with ❤️ using React, Tailwind & Spline. <a href="https://www.flaticon.com/de/kostenlose-icons/code" title="code Icons">Code Icons made by Magnific - Flaticon</a></div>
                         <div className="flex gap-4">
-                            <a download href="/CV_Helena-Kloeckner.pdf" className="hover:text-pink-400">Resume</a>
+                            <a   download="Helena_Kloeckner_CV.pdf" href={`${import.meta.env.BASE_URL}CV_Helena-Kloeckner.pdf`} className="hover:text-pink-400">Resume</a>
                         </div>
                     </div>
                 </footer>
