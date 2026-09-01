@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Spline from '@splinetool/react-spline';
 import { motion } from 'framer-motion';
 import './App.css';
@@ -14,6 +14,41 @@ const SPLINE_SCENE_URL = 'https://prod.spline.design/IpT7wVcltCteByV8/scene.spli
 export default function Portfolio() {
     const [mobileOpen, setMobileOpen] = useState(false);
 
+  
+    const [scrolled, setScrolled] = useState(false);
+    const splineWrapperRef = useRef(null);
+
+useEffect(() => {
+    const handleScroll = () => {
+        console.log("scroll:", window.scrollY);
+        setScrolled(window.scrollY > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+        window.removeEventListener("scroll", handleScroll);
+    };
+}, []);
+
+// Erlaubt normales Seiten-Scrollen, auch wenn die Maus über der Spline-Grafik ist.
+// Spline fängt Wheel-Events sonst selbst ab (Kamera-Zoom). Indem wir das Event
+// in der Capture-Phase abfangen und die Propagation stoppen, bekommt Spline es
+// gar nicht erst zu sehen - der Browser scrollt die Seite trotzdem ganz normal weiter.
+useEffect(() => {
+    const el = splineWrapperRef.current;
+    if (!el) return;
+
+    const stopSplineFromCapturingScroll = (e) => {
+        e.stopPropagation();
+    };
+
+    el.addEventListener('wheel', stopSplineFromCapturingScroll, { capture: true, passive: true });
+    return () => {
+        el.removeEventListener('wheel', stopSplineFromCapturingScroll, { capture: true });
+    };
+}, []);
+
     return (
         <div className="min-h-screen bg-black text-white antialiased">
             {/* Global color variables */}
@@ -27,7 +62,10 @@ export default function Portfolio() {
         `}
             </style>
 
-            <header className="fixed w-full z-40 bg-black/40 backdrop-blur-md">
+            <header     className={`fixed w-full z-40 backdrop-blur-md transition-all duration-300 ${
+                                    scrolled
+                                    ? 'bg-[#18181B]/70 border-b border-pink-500/20 shadow-lg shadow-pink-500/5'
+                                    : 'bg-black/40 border-b border-transparent'}`}>
                 <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
                     <a href="#home" className="text-xl font-semibold tracking-wide" aria-label="Home">
                         <span style={{ color: 'var(--muted-white)' }}>Dev</span>Portfolio
@@ -64,15 +102,38 @@ export default function Portfolio() {
                 )}
             </header>
 
-            <main id="home" className="pt-24">
+            <main id="home" className="pt-10">
                 {/* Hero */}
-                <section className="relative overflow-hidden">
-                    <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center min-h-[70vh]">
-                        <div className="py-12">
+                <section className="relative overflow-hidden min-h-[760px]">
+
+                {/* Spline 3D canvas */}
+                                   <div
+                     ref={splineWrapperRef}
+                     className="
+                     absolute
+                     top-15
+                     right-40
+                     w-[62%]
+                     h-[770px]
+                     z-0
+                     scale-[0.75]
+                    origin-top-right
+
+                 ">
+                     <Spline
+                         scene={SPLINE_SCENE_URL}
+                         style={{
+                             width: '100%',
+                             height: '100%',
+                         }}
+                     />
+                 </div>
+                       <div className="max-w-6xl mx-auto relative z-10 pointer-events-none">
+                            <div className="pt-50 pb-12 max-w-xl">
                             <motion.h1
                                 initial={{ opacity: 0, y: 12 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6 }}
+                                transition={{ duration: 1.0 }}
                                 className="text-4xl sm:text-5xl font-extrabold leading-tight"
                             >
                                 Hi - My name is <br></br> <span style={{ color: 'var(--accent-pink)' }}>Helena Klöckner</span>.
@@ -88,7 +149,7 @@ export default function Portfolio() {
                                 I build immersive games and cross-platform mobile apps. I hold a Bachelor's in Games Programming and specialise in Unreal Engine, Unity, and Flutter for Android & iOS.
                             </motion.p>
 
-                            <div className="mt-8 flex gap-4">
+                            <div className="mt-8 flex gap-4 pointer-events-auto">
                                 <a href="#projects" className="resume-btn inline-flex items-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-pink-600 to-pink-400 shadow-lg" style={{ background: 'linear-gradient(90deg,#ff2d95 0%, #ff6fb5 100%)' }}>
                                     View projects
                                 </a>
@@ -100,11 +161,7 @@ export default function Portfolio() {
                             <div className="mt-8 text-sm text-gray-400">Available for freelance & full-time roles</div>
                         </div>
 
-                        {/* Spline 3D canvas */}
-                        <div className="h-96 md:h-[480px] rounded-3xl overflow-hidden bg-[var(--anthrazit)] shadow-2xl">
-                            {/* Spline integration */}
-                            <Spline scene={SPLINE_SCENE_URL} style={{ height: '100%' }} />
-                        </div>
+                     
                     </div>
                 </section>
 
