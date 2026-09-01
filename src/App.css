@@ -1,0 +1,90 @@
+/* HEADER BACKGROUND (full width, fixed) */
+header {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  /* subtle transparent black */
+  backdrop-filter: blur(6px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* HEADER INNER CONTAINER (matches page width) */
+.header-inner {
+  max-width: 1280px;
+  /* match your main content width */
+  margin: 0 auto;
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* LOGO */
+header h1 {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: white;
+}
+
+header h1 span {
+  color: #ff007f;
+}
+
+
+
+
+/* NAVIGATION LINKS */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+nav a {
+  color: #ff66b2;
+  font-weight: 400;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #ffffff;
+}
+
+/* RESUME BUTTON */
+.resume-btn {
+  border: 1px solid #ff007f;
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.resume-btn:hover {
+  background-color: #ff007f;
+  color: #0a0a0a;
+}
+
+/* SOCIALS BUTTON*/
+.socials-btn {
+  display: inline-block;
+  border: 1px solid rgba(255, 45, 149, 0.06);
+  padding: 0.6rem 1.2rem;
+  border-radius: 9999px;
+  /* rounded pill */
+  color: white;
+  font-size: 0.875rem;
+  background-color: rgba(255, 45, 149, 0.08);
+  transition: all 0.25s ease;
+  min-width: 100px;
+  /* ensures consistent width when wrapping */
+}
+
+.socials-btn:hover {
+  background-color: rgba(255, 45, 149, 0.2);
+  color: var(--accent-pink);
+  border-color: rgba(255, 45, 149, 0.3);
+}
