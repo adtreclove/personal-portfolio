@@ -22,31 +22,7 @@ Personal portfolio website showcasing my projects, skills, and experience as a d
 
 ## 🚀 Getting Started
 
-Clone the repository and install the dependencies:
-
-```bash
-git clone <repository-url>
-cd <project-folder>
-npm install
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-The website will then be available at the local development URL shown in the terminal.
-
-## 📦 Build
-
-To create a production build:
-
-```bash
-npm run build
-```
-
-The generated files can be found in the `dist` folder.
+The website is available via this URL: https://adtreclove.github.io/personal-portfolio/.
 
 ## 👩‍💻 About
 
