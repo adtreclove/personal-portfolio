@@ -1,16 +1,55 @@
-# React + Vite
+# Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal portfolio website showcasing my projects, skills, and experience as a developer.
 
-Currently, two official plugins are available:
+## 🛠️ Built With
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React**
+- **TypeScript**
+- **Vite**
+- **Tailwind CSS**
+- **Framer Motion**
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Responsive design for desktop and mobile
+- Animated sections and UI elements
+- Project showcase
+- Contact section
+- Social links
+- Downloadable CV
+- Modern dark design with custom styling
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Clone the repository and install the dependencies:
+
+```bash
+git clone <repository-url>
+cd <project-folder>
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The website will then be available at the local development URL shown in the terminal.
+
+## 📦 Build
+
+To create a production build:
+
+```bash
+npm run build
+```
+
+The generated files can be found in the `dist` folder.
+
+## 👩‍💻 About
+
+This portfolio was created to showcase my work as a developer, including projects in web development, game development, and other technologies.
+
+---
